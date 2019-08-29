@@ -9,10 +9,7 @@
 
 package org.readium.r2.streamer.parser
 
-import org.readium.r2.shared.ContentLayoutStyle
-import org.readium.r2.shared.Encryption
-import org.readium.r2.shared.LangType
-import org.readium.r2.shared.Publication
+import org.readium.r2.shared.*
 import org.readium.r2.shared.drm.DRM
 import org.readium.r2.shared.parser.xml.XmlParser
 import org.readium.r2.streamer.container.Container
