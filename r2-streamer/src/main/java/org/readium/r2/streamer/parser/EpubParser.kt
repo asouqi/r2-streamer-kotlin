@@ -116,7 +116,7 @@ class EpubParser : PublicationParser {
     }
 
     private fun setPositionList(publication: Publication, container: ContainerEpub){
-        var i = 0
+        var index = 0
         var pages =0
         val readingOrder = publication.readingOrder
         for (link in readingOrder) {
@@ -124,20 +124,18 @@ class EpubParser : PublicationParser {
             val length = container.getEntry(link.href!!.substring(1))!!.getSize()
             val pageLength: Long = 3500
             val pageCount = Math.max(1.0,  Math.ceil(length * 1.0 / pageLength))
-            val locators = ArrayList<Locator>()
             var j:Long = 1
             while (j <= pageCount) {
                 val locations = Locations()
                 locations.progression = (j - 1) / pageCount
                 locations.position = pages + j
-                locators.add(Locator(link.href!!, link.typeLink!!, "", locations, LocatorText()))
+                publication.positions.add(Locator(link.href!!, link.typeLink!!, index, locations, LocatorText()))
                 j++
             }
-            publication.positions.put(link.href!!, Pair<Int, List<Locator>>(i, locators))
+            publication.chapterPosition.put(link.href.toString(), pages)
             pages += pageCount.toInt()
-            i++
+            index++
         }
-        publication.pages = pages
     }
 
     private fun getRootFilePath(data: ByteArray): String {
