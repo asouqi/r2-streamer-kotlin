@@ -129,7 +129,7 @@ class EpubParser : PublicationParser {
                 val locations = Locations()
                 locations.progression = (j - 1) / pageCount
                 locations.position = pages + j
-                publication.positions.add(Locator(link.href!!, link.typeLink!!, index, locations, LocatorText()))
+                publication.positions.add(Locator(link.href!!, link.typeLink!!, link.title , locations, LocatorText()))
                 j++
             }
             publication.chapterPosition.put(link.href.toString(), pages)
