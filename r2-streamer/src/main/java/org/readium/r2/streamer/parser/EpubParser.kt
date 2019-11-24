@@ -24,6 +24,8 @@ import org.readium.r2.streamer.parser.epub.NavigationDocumentParser
 import org.readium.r2.streamer.parser.epub.OPFParser
 import timber.log.Timber
 import java.io.File
+import kotlin.math.ceil
+import kotlin.math.max
 
 // Some constants useful to parse an Epub document
 const val defaultEpubVersion = 1.2
@@ -116,25 +118,30 @@ class EpubParser : PublicationParser {
     }
 
     private fun setPositionList(publication: Publication, container: ContainerEpub){
-        var index = 0
-        var pages =0
-        val readingOrder = publication.readingOrder
-        for (link in readingOrder) {
 
-            val length = container.getEntry(link.href!!.substring(1))!!.getSize()
-            val pageLength: Long = 3500
-            val pageCount = Math.max(1.0,  Math.ceil(length * 1.0 / pageLength))
-            var j:Long = 1
-            while (j <= pageCount) {
+        val pageLength: Long = 3500
+        val readingOrder = publication.readingOrder
+
+        var pages = 0
+
+        for (link in readingOrder) {
+            val length = container.getEntry(link.href!!.substring(1))!!.size
+            val pageCount = max(1.0,  ceil(length * 1.0 / pageLength))
+            val positionByHref = mutableListOf<Locator>()
+
+            var page = 1
+            while (page <= pageCount){
                 val locations = Locations()
-                locations.progression = (j - 1) / pageCount
-                locations.position = pages + j
-                publication.positions.add(Locator(link.href!!, link.typeLink!!, index , locations, LocatorText()))
-                j++
+                locations.progression = (page - 1) / pageCount
+                locations.position = (pages + page).toLong()
+                val locator = Locator(link.href!!, link.typeLink!!, null, locations, LocatorText())
+                publication.positions.add(locator)
+                positionByHref.add(locator)
+                page++
             }
-            publication.chapterPosition.put(link.href.toString(), pages)
+
+            publication.resourcePositions[link.href!!] = positionByHref
             pages += pageCount.toInt()
-            index++
         }
     }
 
