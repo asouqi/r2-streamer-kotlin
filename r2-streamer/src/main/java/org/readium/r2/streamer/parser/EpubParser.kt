@@ -117,24 +117,25 @@ class EpubParser : PublicationParser {
         return PubBox(publication, container)
     }
 
-    private fun setPositionList(publication: Publication, container: ContainerEpub){
+    private fun setPositionList(publication: Publication, container: ContainerEpub) {
 
         val pageLength: Long = 3500
         val readingOrder = publication.readingOrder
 
         var pages = 0
 
-        for (link in readingOrder) {
+        readingOrder.forEachIndexed { index, link ->
+
             val length = container.getEntry(link.href!!.substring(1))!!.size
-            val pageCount = max(1.0,  ceil(length * 1.0 / pageLength))
+            val pageCount = max(1.0, ceil(length * 1.0 / pageLength))
             val positionByHref = mutableListOf<Locator>()
 
             var page = 1
-            while (page <= pageCount){
+            while (page <= pageCount) {
                 val locations = Locations()
                 locations.progression = (page - 1) / pageCount
                 locations.position = (pages + page).toLong()
-                val locator = Locator(link.href!!, link.typeLink!!, null, locations, LocatorText())
+                val locator = Locator(link.href!!, link.typeLink!!, index, locations, LocatorText())
                 publication.positions.add(locator)
                 positionByHref.add(locator)
                 page++
