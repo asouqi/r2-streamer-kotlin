@@ -37,11 +37,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.jakewharton.timber:timber:4.7.1'
-    if (findProject(':r2-shared')) {
-        implementation project(':r2-shared')
-    } else {
-        implementation "com.github.readium:r2-shared-kotlin:1.1.0"
-    }
+//    if (findProject(':r2-shared')) {
+//        implementation project(':r2-shared')
+//    } else {
+//        implementation "com.github.readium:r2-shared-kotlin:1.1.0"
+//    }
+    implementation "com.github.asouqi:r2-shared-kotlin:3.0.1"
 
     //TODO conflicting support libraries, excluding these
     implementation('com.mcxiaoke.koi:core:0.5.5') {
