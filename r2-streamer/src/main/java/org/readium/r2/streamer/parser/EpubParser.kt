@@ -27,16 +27,19 @@ import java.io.File
 import kotlin.math.ceil
 import kotlin.math.max
 
-// Some constants useful to parse an Epub document
-const val defaultEpubVersion = 1.2
-const val containerDotXmlPath = "META-INF/container.xml"
-const val encryptionDotXmlPath = "META-INF/encryption.xml"
-const val lcplFilePath = "META-INF/license.lcpl"
-const val mimetype = "application/epub+zip"
-const val mimetypeOEBPS = "application/oebps-package+xml"
-const val mediaOverlayURL = "media-overlay?resource="
 
 class EpubParser : PublicationParser {
+
+    companion object {
+        // Some constants useful to parse an Epub document
+        const val defaultEpubVersion = 1.2
+        const val containerDotXmlPath = "META-INF/container.xml"
+        const val encryptionDotXmlPath = "META-INF/encryption.xml"
+        const val lcplFilePath = "META-INF/license.lcpl"
+        const val mimetypeEpub = "application/epub+zip"
+        const val mimetypeOEBPS = "application/oebps-package+xml"
+        const val mediaOverlayURL = "media-overlay?resource="
+    }
 
     private val opfParser = OPFParser()
     private val ndp = NavigationDocumentParser()
@@ -79,7 +82,7 @@ class EpubParser : PublicationParser {
             return null
         }
 
-        container.rootFile.mimetype = mimetype
+        container.rootFile.mimetype = mimetypeEpub
         container.rootFile.rootFilePath = getRootFilePath(data)
 
         val xmlParser = XmlParser()
@@ -135,7 +138,7 @@ class EpubParser : PublicationParser {
                 val locations = Locations()
                 locations.progression = (page - 1) / pageCount
                 locations.position = (pages + page).toLong()
-                val locator = Locator(link.href!!, link.typeLink!!, index, locations, LocatorText())
+                val locator = Locator(link.href!!, link.typeLink!!,null ,index, locations, LocatorText())
                 publication.positions.add(locator)
                 positionByHref.add(locator)
                 page++
