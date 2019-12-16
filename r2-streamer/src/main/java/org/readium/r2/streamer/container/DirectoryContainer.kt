@@ -43,7 +43,9 @@ interface DirectoryContainer : Container {
             FileInputStream(File(rootFile.toString() + "/" + getDecodedRelativePath(relativePath)))
 
     fun getDecodedRelativePath(relativePath: String): String {
-        return URI(relativePath).path
+        //        val encodedPath = URLEncoder.encode(relativePath, "UTF-8");
+        val replacedPath = relativePath.replace(" ", "%20")
+        return URI(replacedPath).path
     }
 }
 
