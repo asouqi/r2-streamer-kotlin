@@ -37,6 +37,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.jakewharton.timber:timber:4.7.1'
+//    if (findProject(':r2-shared')) {
+//        implementation project(':r2-shared')
+//    } else {
+//        implementation "com.github.readium:r2-shared-kotlin:1.1.0"
+//    }
+    implementation "com.github.asouqi:r2-shared-kotlin:3.0.1"
     if (findProject(':r2-shared')) {
         implementation project(':r2-shared')
     } else {
@@ -52,8 +58,12 @@ dependencies {
         exclude module: 'support-v4'
     }
     implementation "androidx.appcompat:appcompat:1.1.0-rc01"
-    implementation 'org.nanohttpd:nanohttpd:2.3.2-SNAPSHOT'
-    implementation 'org.nanohttpd:nanohttpd-nanolets:2.3.2-SNAPSHOT'
+    implementation ('com.github.edrlab.nanohttpd:nanohttpd:2.3.2') {
+        exclude group: 'org.parboiled'
+    }
+    implementation ('com.github.edrlab.nanohttpd:nanohttpd-nanolets:2.3.2') {
+        exclude group: 'org.parboiled'
+    }
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'commons-io:commons-io:2.4'
     implementation 'org.zeroturnaround:zt-zip:1.12'

@@ -89,7 +89,7 @@ class DiViNaParser : PublicationParser {
 
         //Parsing manifest.json & building publication object
         val publication = parsePublication(json)
-        publication.type = Publication.TYPE.DiViNa
+       // publication.type = Publication.TYPE.DiViNa
 
         // Add href as title if title is missing (this is used to display the TOC)
         for ((index, link) in publication.readingOrder.withIndex()) {
