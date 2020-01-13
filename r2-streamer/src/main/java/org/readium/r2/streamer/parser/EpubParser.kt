@@ -122,7 +122,7 @@ class EpubParser : PublicationParser {
 
     private fun setPositionList(publication: Publication, container: ContainerEpub) {
 
-        val pageLength: Long = 3500
+        val pageLength: Long = 1024
         val readingOrder = publication.readingOrder
 
         var pages = 0
